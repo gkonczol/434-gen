@@ -22,8 +22,6 @@ void setup()
   }
   
   generations = 1;
-  
-  frameRate(2);
 }
 
 void draw()
@@ -61,6 +59,39 @@ void draw()
   }
   bestPhrase = population[bestPhraseIndex].getPhrase();
   
+  text("Total generations: " + generations, 10, 10);
+  
+  text("Phrases in generation " + generations + ":", 700, 10);
+  int cgypos = 20;
+  for(int i = 0; i < population.length; i++)
+  {
+    cgypos += 12;
+    text(population[i].getPhrase(), 700, cgypos);
+  }
+  
+  int nypos = 10;
+  text("Population size: " + totalPopulation, 900, nypos);
+  nypos += 12;
+  
+  text("Average fitness: " + avgFitness, 900, nypos);
+  nypos += 12;
+  
+  text("Best phrase in generation:", 900, nypos);
+  nypos += 12;
+  text(bestPhrase, 900, nypos);
+  nypos += 12;
+  
+  for(int i = 0; i < population.length; i++)
+  {
+    if(target.equals(population[i].getPhrase()))
+    {
+      textSize(32);
+      fill(0);
+      text("Phrase found after " + generations + " generations", 20, 200);
+      noLoop();
+    }
+  }
+  
   ArrayList<DNA> matingPool = new ArrayList<DNA>();
   
   /* add to mating pool */
@@ -97,35 +128,4 @@ void draw()
     population[i] = child;
   }
   generations++;
-  text("Total generations: " + generations, 10, 10);
-  
-  text("Phrases in generation " + generations + ":", 700, 10);
-  int cgypos = 20;
-  for(int i = 0; i < population.length; i++)
-  {
-    cgypos += 12;
-    text(population[i].getPhrase(), 700, cgypos);
-  }
-  
-  int nypos = 10;
-  text("Population size: " + totalPopulation, 900, nypos);
-  nypos += 12;
-  
-  text("Average fitness: " + avgFitness, 900, nypos);
-  nypos += 12;
-  
-  text("Best phrase in generation:", 900, nypos);
-  nypos += 12;
-  text(bestPhrase, 900, nypos);
-  nypos += 12;
-  
-  for(int i = 0; i < population.length; i++)
-  {
-    if(target.equals(population[i].getPhrase()))
-    {
-      textSize(18);
-      text("Phrase found after " + generations + " generations", 200, 20);
-      noLoop();
-    }
-  }
 }
