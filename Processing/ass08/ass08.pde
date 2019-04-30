@@ -22,6 +22,8 @@ void setup()
   }
   
   generations = 1;
+  
+  frameRate(2);
 }
 
 void draw()
@@ -34,8 +36,30 @@ void draw()
   for(int i = 0; i < population.length; i++)
   {
     population[i].fitness();
-    //println(population[i].getPhrase());
   }
+  
+  /* calculate average fitness of population */
+  float avgFitness;
+  float totalFitness = 0;
+  for(int i = 0; i < population.length; i++)
+  {
+    totalFitness += population[i].fitness;
+  }
+  avgFitness = totalFitness / population.length;
+  
+  /* calculate best phrase of population */
+  float bestPhraseValue = population[0].fitness;
+  int bestPhraseIndex = 0;
+  String bestPhrase;
+  for(int i = 0; i < population.length; i++)
+  {
+    if(population[i].fitness > bestPhraseValue)
+    {
+      bestPhraseValue = population[i].fitness;
+      bestPhraseIndex = i;
+    }
+  }
+  bestPhrase = population[bestPhraseIndex].getPhrase();
   
   ArrayList<DNA> matingPool = new ArrayList<DNA>();
   
@@ -73,10 +97,9 @@ void draw()
     population[i] = child;
   }
   generations++;
-  String strTG = "Total generations: " + generations;
-  text(strTG, 10, 10);
+  text("Total generations: " + generations, 10, 10);
   
-  text("Phrases in current generation:", 700, 10);
+  text("Phrases in generation " + generations + ":", 700, 10);
   int cgypos = 20;
   for(int i = 0; i < population.length; i++)
   {
@@ -84,16 +107,24 @@ void draw()
     text(population[i].getPhrase(), 700, cgypos);
   }
   
-  text("Phrases in current generation:", 900, 10);
+  int nypos = 10;
+  text("Population size: " + totalPopulation, 900, nypos);
+  nypos += 12;
   
-  noLoop();
+  text("Average fitness: " + avgFitness, 900, nypos);
+  nypos += 12;
+  
+  text("Best phrase in generation:", 900, nypos);
+  nypos += 12;
+  text(bestPhrase, 900, nypos);
+  nypos += 12;
+  
   for(int i = 0; i < population.length; i++)
   {
     if(target.equals(population[i].getPhrase()))
     {
-      String strPF = "Phrase found after " + generations + " generations";
       textSize(18);
-      text(strPF, 200, 20);
+      text("Phrase found after " + generations + " generations", 200, 20);
       noLoop();
     }
   }
