@@ -1,44 +1,45 @@
-DNA[] population = new DNA[100];
+DNA[] population;
+int totalPopulation;
 float mutationRate;
 String target;
+int generations;
 
 void setup()
 {
-  size(600,600);
+  size(1200,600);
   
   mutationRate = 0.01;
+  totalPopulation = 1000;
+  
   DNA targetGetter = new DNA();
   target = targetGetter.getTarget(); 
+  
+  population = new DNA[totalPopulation];
   
   for (int i = 0; i < population.length; i++)
   {
     population[i] = new DNA();
   }
-  for(DNA d : population)
-  {
-    for(char c : d.genes)
-    {
-      print(c);
-    }
-    println("");
-  }
+  
+  generations = 1;
 }
 
 void draw()
 {
   background(255);
-  //if((frameCount % 0) == 0)
-  //{
-  //}
+  textSize(12);
+  fill(20);
+  
+  /* calculate fitness */
   for(int i = 0; i < population.length; i++)
   {
     population[i].fitness();
-    //println(population[i].fitness);
-    println(population[i].getPhrase());
+    //println(population[i].getPhrase());
   }
   
   ArrayList<DNA> matingPool = new ArrayList<DNA>();
   
+  /* add to mating pool */
   for(int i = 0; i < population.length; i++)
   {
     int n = int(population[i].fitness * 100);
@@ -48,6 +49,7 @@ void draw()
     }
   }
   
+  /* reproduce */
   for(int i = 0; i < population.length; i++)
   {
     int a = int(random(matingPool.size()));
@@ -70,12 +72,29 @@ void draw()
     
     population[i] = child;
   }
+  generations++;
+  String strTG = "Total generations: " + generations;
+  text(strTG, 10, 10);
   
+  text("Phrases in current generation:", 700, 10);
+  int cgypos = 20;
+  for(int i = 0; i < population.length; i++)
+  {
+    cgypos += 12;
+    text(population[i].getPhrase(), 700, cgypos);
+  }
+  
+  text("Phrases in current generation:", 900, 10);
+  
+  noLoop();
   for(int i = 0; i < population.length; i++)
   {
     if(target.equals(population[i].getPhrase()))
     {
-      exit();
+      String strPF = "Phrase found after " + generations + " generations";
+      textSize(18);
+      text(strPF, 200, 20);
+      noLoop();
     }
   }
 }
