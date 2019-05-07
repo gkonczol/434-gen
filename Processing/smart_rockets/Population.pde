@@ -14,7 +14,7 @@ class Population
     for(int i = 0; i < population.length; i++)
     {
       PVector position = new PVector(width/2, height+20);
-      population[i] = new Rocket(position);
+      population[i] = new Rocket(position, new DNA());
     }
   }
   
@@ -58,10 +58,12 @@ class Population
       Rocket parentA = matingPool.get(a);
       Rocket parentB = matingPool.get(b);
       
-      DNA child = parentA.crossover(parentB);
+      DNA child = parentA.getDNA().crossover(parentB.getDNA());
       child.mutate(mutationRate);
       
-      population[i] = child;
+      PVector position = new PVector(width/2, height+20);
+      
+      population[i] = new Rocket(position, child);
     }
     generations++;
   }
@@ -72,6 +74,11 @@ class Population
     {
       population[i].run();
     }
+  }
+  
+  int getGenerations()
+  {
+    return generations;
   }
   
 }

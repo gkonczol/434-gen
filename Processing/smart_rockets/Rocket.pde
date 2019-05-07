@@ -10,24 +10,41 @@ class Rocket {
   float fitness;
   int geneCounter = 0;
 
-  Rocket(PVector location) {
+  Rocket(PVector location, DNA dna) {
     acceleration = new PVector();
     velocity = new PVector();
     position = location.get();
     size = 4;
+    this.dna = dna;
   }
   
   void run()
   {
-    applyForce(dna.genes[geneCounter]);
-    geneCounter++;
-    update();
+    if(!targetHit())
+    {
+      applyForce(dna.genes[geneCounter]);
+      geneCounter++;
+      update();
+    }
+    display();
+  }
+  
+  boolean targetHit()
+  {
+    float distance = PVector.dist(position, target);
+    if(distance < 5)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
   }
   
   void fitness()
   {
     float distance = PVector.dist(position, target);
-    //return 1.0 / distance;
     fitness = pow(1.0/distance,2);
   }
 
@@ -64,6 +81,11 @@ class Rocket {
     endShape();
 
     popMatrix();
+  }
+  
+  DNA getDNA()
+  {
+    return dna;
   }
 
 }
