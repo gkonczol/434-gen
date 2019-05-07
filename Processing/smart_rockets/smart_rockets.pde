@@ -1,10 +1,12 @@
-final int LIFETIME = 500;
+final int LIFETIME = 600;
 
 int lifeCounter;
 
 Population population;
 
 PVector target;
+
+ArrayList<Obstacle> obstacles;
 
 void setup()
 {
@@ -15,6 +17,9 @@ void setup()
   float mutationRate = 0.01;
   population = new Population(mutationRate, 50);
   target = new PVector(width/2, 10);
+  
+  obstacles = new ArrayList<Obstacle>();
+  obstacles.add(new Obstacle(width/2 - 100, height/2, 200, 10));
 }
 
 void draw()
@@ -26,7 +31,7 @@ void draw()
   
   if(lifeCounter < LIFETIME)
   {
-    population.live();
+    population.live(obstacles);
     lifeCounter++;
   }
   else
@@ -35,6 +40,11 @@ void draw()
     population.fitness();
     population.selection();
     population.reproduction();
+  }
+  
+  for(Obstacle obstacle : obstacles)
+  {
+    obstacle.display();
   }
   
   

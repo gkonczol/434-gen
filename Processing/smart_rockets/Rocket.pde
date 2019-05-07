@@ -9,6 +9,11 @@ class Rocket {
   float size;
   float fitness;
   int geneCounter = 0;
+  
+  float recordDistance;
+  int finishTime;
+  
+  boolean stopped = false;
 
   Rocket(PVector location, DNA dna) {
     acceleration = new PVector();
@@ -16,15 +21,18 @@ class Rocket {
     position = location.get();
     size = 4;
     this.dna = dna;
+    finishTime = 0;
+    recordDistance = 20000000;
   }
   
-  void run()
+  void run(ArrayList<Obstacle> obstacles)
   {
-    if(!targetHit())
+    if(!targetHit() && !stopped)
     {
       applyForce(dna.genes[geneCounter]);
       geneCounter++;
       update();
+      obstacles(obstacles);
     }
     display();
   }
@@ -32,20 +40,34 @@ class Rocket {
   boolean targetHit()
   {
     float distance = PVector.dist(position, target);
+    if(distance < recordDistance)
+    {
+      recordDistance = distance;
+    }
     if(distance < 5)
     {
+      stopped = true;
       return true;
     }
     else
     {
+      finishTime++;
       return false;
     }
   }
   
   void fitness()
   {
-    float distance = PVector.dist(position, target);
-    fitness = pow(1.0/distance,2);
+    if(recordDistance < 1) recordDistance = 1;
+    fitness = pow(1.0/(finishTime*recordDistance),2);
+    if(stopped)
+    {
+      fitness *= 0.01;
+    }
+    if(targetHit())
+    {
+      fitness *= 2;
+    }
   }
 
   void applyForce(PVector f) {
@@ -91,6 +113,17 @@ class Rocket {
   float getFitness()
   {
     return fitness;
+  }
+  
+  void obstacles(ArrayList<Obstacle> obstacles)
+  {
+    for(Obstacle obstacle : obstacles)
+    {
+      if(obstacle.contains(position))
+      {
+        stopped = true;
+      }
+    }
   }
 
 }

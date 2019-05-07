@@ -72,11 +72,11 @@ class Population
     generations++;
   }
   
-  void live()
+  void live(ArrayList<Obstacle> obstacles)
   {
     for(int i = 0; i < population.length; i++)
     {
-      population[i].run();
+      population[i].run(obstacles);
     }
   }
   
