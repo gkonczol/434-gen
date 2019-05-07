@@ -87,5 +87,10 @@ class Rocket {
   {
     return dna;
   }
+  
+  float getFitness()
+  {
+    return fitness;
+  }
 
 }

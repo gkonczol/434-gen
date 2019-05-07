@@ -37,6 +37,7 @@ void draw()
     population.reproduction();
   }
   
+  
   fill(0);
   text("Generation: " + population.getGenerations(), 10, 12);
   text("Cycles left: " + (LIFETIME - lifeCounter), 10, 24);
