@@ -28,7 +28,6 @@ class Population
   
   void selection()
   {
-    println("selection");
     matingPool.clear();
     
     float maxFitness = getMaxFitness();
@@ -37,22 +36,17 @@ class Population
     {
       float normalizedFitness = map(population[i].getFitness(), 0, maxFitness, 0, 1);
       int n = int(normalizedFitness * 100);
-      println("n" + n);
-      println("fitness" + population[i].fitness);
       for(int j = 0; j < n; j++)
       {
         matingPool.add(population[i]);
       }
     }
-    println(matingPool.size());
   }
   
   void reproduction()
   {
-    println("reproduction");
     for(int i = 0; i < population.length; i++)
     {
-      println(matingPool.size());
       int a = int(random(matingPool.size()));
       int b = int(random(matingPool.size()));
       
